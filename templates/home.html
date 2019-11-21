@@ -1,0 +1,162 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Movies/Series</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"/>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="{% static 'style.css'%}">
+
+</head>
+
+
+
+
+
+
+<body>
+	<nav class="navbar fixed-top " style="position: sticky;background-color: #3399ff;">
+  		<h1 style="color: white;font-weight: bold;">PARINATI</h1>
+	</nav>
+  <form class="form-inline my-2 my-lg-0", method='post'>
+    {% csrf_token %}
+
+
+<div>
+
+<nav class="navbar navbar-expand-lg " style="background-color: white; margin-left: 150px">
+
+  
+     {% for choice in form.watch %}
+        
+       &nbsp&nbsp&nbsp&nbsp {{ choice }}
+        
+       {% endfor %}
+    <ul class="navbar-nav mr-auto" style="background-color: white">
+      <li class="nav-item active" >
+        {{form.select_genre.label}} : {{form.select_genre}}
+      </li>
+      <li class="nav-item" style="margin-left: 40px;">
+        {{form.select_year.label}} : {{form.select_year}}
+      </li>
+      <li class="nav-item" style="margin-left: 40px;">
+        {{form.select_language.label}} : {{form.select_language}} {{form.select_language.errors}}
+      </li>
+    </ul>
+    
+      {{form.user_input}}
+
+      <button padding: 50px 32px; class="glyphicon glyphicon-search" margin-left: 10px type="submit"></button>
+    </form>
+ 
+</nav>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4">
+  
+</div>
+
+{% if movies %}
+
+      <h3 class="NavBarStyle">MOVIES</h3>
+<div  class="container" style="width: 100%;text-align: center; height: auto;">
+
+  {% for mov in movies %}
+
+  <div class="col-sm-4">
+
+    <div class="card" style="width: 100%;display: inline-block;">
+        <img class="card-img-top thumbnail img" src="{{mov.image.url}}" alt="movie_img">
+        <div class="card-body">
+        {% if mov.rating <= 2 %}
+        <h4 style="color: red;"> {{mov.rating}}</h4>
+        {% endif %}
+
+        {% if mov.rating > 2 and mov.rating <= 3.5 %}
+        <h4 style="color: orange;"> {{mov.rating}}</h4>
+        {% endif %}
+
+        {% if mov.rating > 3.6 and mov.rating < 5 %}
+        <h4 style="color: green;"> {{mov.rating}}</h4>
+        {% endif %}
+
+
+       
+        <p  id="{{movie.id}}" tabindex="0" data-html="true" mouseover="" class="card-text" style="margin-top: 10px;margin-left:0px; background-position: 50% 50%; width:100%" data-toggle="popover" data-trigger="focus" data-placement="auto" title="{{mov.name}}" data-content="<div><b>Description:</b><br>{{mov.description}}<br><br></div><div><b>Actor :</b><br> {% for actor in mov.actor_set.all %} <a href='#'>{{actor}}</a> {% endfor %}</div> <br><div><b>Director :</b><br></div> <a href='#'>{{mov.director}}</a>"><a href="">{{mov.name}} </a></p>
+        </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+</div>
+{% endif %}
+
+{% if series %}
+      <h3 class="NavBarStyle">SERIES<h3>
+ 
+
+<div class="container" style="width: 100%;text-align: center;height: auto">
+  <div class="row">
+  {% for seri in series %}
+ <div class="col-sm-4">
+    <div class="card" style="width: 100%;display: inline-block;margin-top:30px;left:0px;">
+        <img class="card-img-top thumbnail img" src="{{seri.image.url}}" alt="image">
+        <div class="card-body">
+        {% if seri.rating <= 2 %}
+        <h4 style="color: red;"> {{seri.rating}}</h4>
+        {% endif %}
+
+        {% if seri.rating > 2 and seri.rating <= 3 %}
+        <h4 style="color: orange;"> {{seri.rating}}</h4>
+        {% endif %}
+
+        {% if seri.rating > 3 and seri.rating < 5 %}
+        <h4 style="color: green;"> {{seri.rating}}</h4>
+        {% endif %}
+
+
+       
+        <p  id="{{movie.id}}" tabindex="0" data-html="true" mouseover="" class="card-text" style="margin-top: 10px;margin-left:0px; background-position: 50% 50%; width:100%" data-toggle="popover" data-trigger="focus" data-placement="auto" title="{{seri.name}}" data-content="<div><b>Description :</b><br>{{seri.discription}}<br><br></div><b>Language:</b><br></div> <a href='#'>{{seri.language}} <div><b></div>"><a href="">{{seri.name}} </a></p>
+        </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+</div>
+{% endif %}
+
+<footer class="footer" style="background-color:white;height: 80px; margin-top: 100px; width: 100%; margin-bottom: 60px;">
+  <div class="container text-center" style="background-color: #3399ff;height: 80px;width: 100%; margin-bottom: 60px; ">
+    <a href="#"><i style="line-height: 80px; margin-left: 30px; " class="fa fa-facebook"></i></a>
+    <a href="#"><i style="line-height: 80px; margin-left: 30px; " class="fa fa-twitter"></i></a>
+    <a href="#"><i style="line-height: 80px; margin-left: 30px; " class="fa fa-instagram"></i></a>
+    <p style=" text-align: right; font-size: 12px;" >Made by RaunaK</p>
+     </div>
+</footer>
+
+
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+	$(".card-text").mouseover(function() {
+		 $(this).popover('show')  ;
+	})
+   $(".card").mouseleave(function() {
+     $(this).find("p").popover('hide');
+  })
+  });
+</script>
+
+</body>
+</html>
